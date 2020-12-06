@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Radio} from 'antd';
+import {Form, Radio, Button} from 'antd';
 import 'antd/dist/antd.css'
 import Compose from "./Compose";
 
@@ -56,8 +56,8 @@ const App = () => {
             name="basic"
             initialValues={{
                 test: {
-                    first: 1,
-                    second: 1,
+                    first: 2,
+                    second: 2,
                     third: 1
                 }
             }}
@@ -118,16 +118,16 @@ const App = () => {
                                  handle={(first, second) => {
                                      return [
                                          {
-                                             label: `${(first ? 1 : -1) * ((second - 1) * 4 + 1)}`,
+                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 1)}`,
                                              value: 1
                                          }, {
-                                             label: `${(first ? 1 : -1) * ((second - 1) * 4 + 2)}`,
+                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 2)}`,
                                              value: 2
                                          }, {
-                                             label: `${(first ? 1 : -1) * ((second - 1) * 4 + 3)}`,
+                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 3)}`,
                                              value: 3
                                          }, {
-                                             label: `${(first ? 1 : -1) * ((second - 1) * 4 + 4)}`,
+                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 4)}`,
                                              value: 4
                                          },
                                      ]
@@ -135,6 +135,9 @@ const App = () => {
                     />
                 </Compose>
             </Form.Item>
+            <Button type="primary" htmlType="submit">
+                打印值
+            </Button>
         </Form>
     );
 };
