@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Radio, Button} from 'antd';
+import {Form, Radio, Button, Input} from 'antd';
 import 'antd/dist/antd.css'
 import Compose from "./Compose";
 
@@ -142,6 +142,10 @@ const App = () => {
                                      field={'third'}
                                      handle={thirdHandle}
                         />
+                    </div>
+                    <div style={{height: 20}}/>
+                    <div>
+                        一共 <Input field={'money'} handle={(first) => ({disabled: first === 1})} style={{width: 180}}/>元
                     </div>
                 </Compose>
             </Form.Item>
