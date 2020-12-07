@@ -1,13 +1,6 @@
 import React, {Component, Fragment} from 'react';
-
-const toObject = (fields, value) => {
-    const obj = {};
-    fields.forEach(key => {
-        obj[key] = undefined
-    });
-    return Object.assign(obj, value);
-};
-
+import getParams from "../util/getParams";
+import toObject from "../util/toObject";
 // 默认 handler 只能监听其上层的变化
 // 考虑影响 内容变化字段为 options 后续可添加配置字段
 /**
@@ -22,37 +15,38 @@ export default class Compose extends Component {
     constructor(props) {
         super(props);
         const {children, value} = props;
-        const fields = [], listenList = [], optionList = {};
+        const fields = [], listenList = [];
         React.Children.forEach(children, function (child) {
-            const {field, listen, options, handle} = child.props;
-            optionList[field] = options;
+            const {field, handle} = child.props;
             if (field) fields.push(field);
-            if (listen) listenList.push({listen, handle, field});
+            if (handle) {
+                listenList.push({listen: getParams(handle.toString()), handle, field});
+            }
 
         });
-        this.optionList = optionList;
         this.listenList = listenList;
-        if (value && Object.keys(value).length !== 0) this.handleTheOptions(undefined, toObject(fields, value));
+        this.mapProps = {};
+        if (value && Object.keys(value).length !== 0) this.handleProps(undefined, toObject(fields, value));
         this.state = toObject(fields, value);
     }
 
     handleOnChange = (field, e) => {
         const {onChange} = this.props;
         const newValues = {...this.state, [field]: e.target.value};
-        this.handleTheOptions(field, newValues);
+        this.handleProps(field, newValues);
         onChange(newValues);
         this.setState(newValues);
     };
-    handleTheOptions = (fieldH, values) => {
+    handleProps = (fieldH, values) => {
         this.listenList.forEach(({listen, handle, field}) => {
             if (fieldH) {
                 if (~listen.indexOf(fieldH)) {
                     const args = listen.map(key => values[key]);
-                    this.optionList[field] = handle(...args);
+                    this.mapProps[field] = handle(...args);
                 }
             } else {
                 const args = listen.map(key => values[key]);
-                this.optionList[field] = handle(...args);
+                this.mapProps[field] = handle(...args);
             }
         })
     };
@@ -61,14 +55,14 @@ export default class Compose extends Component {
         const {children} = this.props;
         return (
             <Fragment>
-                {React.Children.map(children, ((ele, index) => {
+                {React.Children.map(children, ((ele) => {
                     const {type, props} = ele;
-                    const {field, listen, handle, children, options, ...other} = props;
+                    const {field, handle, children, ...other} = props;
                     if (field) {
                         return React.createElement(type, Object.assign({}, other, {
-                            options: this.optionList[field],
+                            ...this.mapProps[field],
                             onChange: this.handleOnChange.bind(this, field),
-                            value: this.state[field]
+                            value: this.state[field],
                         }), children);
                     }
                     return ele;

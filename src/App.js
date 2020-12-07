@@ -41,6 +41,66 @@ const thirdOption = [
         value: 4
     },
 ];
+
+const secondHandle = first => {
+    if (first === 1) {
+        return {
+            options: [
+                {
+                    label: 'A(1~4)',
+                    value: 1
+                }, {
+                    label: 'B(5~8)',
+                    value: 2
+                }, {
+                    label: 'C(9~12)',
+                    value: 3
+                }, {
+                    label: 'D(13~16)',
+                    value: 4
+                },
+            ]
+        }
+    } else if (first === 2) {
+        return {
+            options: [
+                {
+                    label: 'a(-1~-4)',
+                    value: 1
+                }, {
+                    label: 'b(-5~-8)',
+                    value: 2
+                }, {
+                    label: 'c(-9-~12)',
+                    value: 3
+                }, {
+                    label: 'd(-13~-16)',
+                    value: 4
+                },
+            ]
+        }
+    }
+};
+const thirdHandle = function (first, second) {
+    return {
+        options: [
+            {
+                label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 1)}`,
+                value: 1
+            }, {
+                label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 2)}`,
+                value: 2
+            }, {
+                label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 3)}`,
+                value: 3
+            }, {
+                label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 4)}`,
+                value: 4
+            },
+        ]
+    }
+};
+
 const App = () => {
     const onFinish = values => {
         console.log('Success:', values);
@@ -75,63 +135,11 @@ const App = () => {
                     <div style={{height: 20}}/>
                     <Radio.Group options={SecondOption}
                                  field={'second'}
-                                 listen={['first']}
-                                 handle={(first) => {
-                                     if (first === 1) {
-                                         return [
-                                             {
-                                                 label: 'A(1~4)',
-                                                 value: 1
-                                             }, {
-                                                 label: 'B(5~8)',
-                                                 value: 2
-                                             }, {
-                                                 label: 'C(9~12)',
-                                                 value: 3
-                                             }, {
-                                                 label: 'D(13~16)',
-                                                 value: 4
-                                             },
-                                         ]
-                                     } else if (first === 2) {
-                                         return [
-                                             {
-                                                 label: 'a(-1~-4)',
-                                                 value: 1
-                                             }, {
-                                                 label: 'b(-5~-8)',
-                                                 value: 2
-                                             }, {
-                                                 label: 'c(-9-~12)',
-                                                 value: 3
-                                             }, {
-                                                 label: 'd(-13~-16)',
-                                                 value: 4
-                                             },
-                                         ]
-                                     }
-                                 }}/>
+                                 handle={secondHandle}/>
                     <div style={{height: 20}}/>
                     <Radio.Group options={thirdOption}
                                  field={'third'}
-                                 listen={['first', 'second']}
-                                 handle={(first, second) => {
-                                     return [
-                                         {
-                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 1)}`,
-                                             value: 1
-                                         }, {
-                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 2)}`,
-                                             value: 2
-                                         }, {
-                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 3)}`,
-                                             value: 3
-                                         }, {
-                                             label: `${(first === 1 ? 1 : -1) * ((second - 1) * 4 + 4)}`,
-                                             value: 4
-                                         },
-                                     ]
-                                 }}
+                                 handle={thirdHandle}
                     />
                 </Compose>
             </Form.Item>
