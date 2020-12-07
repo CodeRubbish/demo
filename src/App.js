@@ -116,8 +116,8 @@ const App = () => {
             name="basic"
             initialValues={{
                 test: {
-                    first: 2,
-                    second: 2,
+                    first: 1,
+                    second: 1,
                     third: 1
                 }
             }}
@@ -137,10 +137,12 @@ const App = () => {
                                  field={'second'}
                                  handle={secondHandle}/>
                     <div style={{height: 20}}/>
-                    <Radio.Group options={thirdOption}
-                                 field={'third'}
-                                 handle={thirdHandle}
-                    />
+                    <div>
+                        <Radio.Group options={thirdOption}
+                                     field={'third'}
+                                     handle={thirdHandle}
+                        />
+                    </div>
                 </Compose>
             </Form.Item>
             <Button type="primary" htmlType="submit">
